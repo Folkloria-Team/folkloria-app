@@ -1,27 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:folkloria/common/style/theme/folkloriat_theme.dart';
 import 'package:folkloria/data/services/api_service.dart';
 import 'package:folkloria/data/services/local_database_service.dart';
-import 'package:folkloria/data/services/shared_preferences_service.dart';
-import 'package:folkloria/providers/local_database_provider.dart';
-import 'package:folkloria/providers/shared_preferences_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:folkloria/providers/detail/book_detail_provider.dart';
+import 'package:folkloria/providers/favorite/local_database_provider.dart';
+import 'package:folkloria/providers/home/book_list_provider.dart';
+import 'package:folkloria/providers/main/index_nav_provider.dart';
+import 'package:folkloria/ui/screens/detail/detail_screen.dart';
+import 'package:folkloria/ui/screens/main/main_screen.dart';
+import 'package:folkloria/common/static/navigation_route.dart';
+import 'package:folkloria/common/style/theme/folkloria_theme.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:folkloria/providers/setting/dark_mode_state_provider.dart';
+import 'package:folkloria/providers/setting/shared_preferences_provider.dart';
+import 'package:folkloria/data/services/shared_preferences_service.dart';
+import 'package:folkloria/common/utils/dark_mode_state.dart' as dms;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final prefs = await SharedPreferences.getInstance();
 
+  String route = NavigationRoute.mainRoute.name;
+
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => IndexNavProvider()),
         Provider(create: (context) => ApiServices()),
+        ChangeNotifierProvider(
+          create: (context) => BookListProvider(context.read<ApiServices>()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => BookDetailProvider(context.read<ApiServices>()),
+        ),
         Provider(create: (context) => LocalDatabaseService()),
         ChangeNotifierProvider(
           create: (context) =>
               LocalDatabaseProvider(context.read<LocalDatabaseService>()),
         ),
+        ChangeNotifierProvider(create: (context) => DarkModeStateProvider()),
         Provider(create: (context) => SharedPreferencesService(prefs)),
         ChangeNotifierProvider(
           create: (context) => SharedPreferencesProvider(
@@ -29,68 +47,60 @@ void main() async {
           ),
         ),
       ],
-      child: const MyApp(),
+      child: MyApp(initialRoute: route),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  final String initialRoute;
+
+  const MyApp({super.key, required this.initialRoute});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Folkloria',
-      debugShowCheckedModeBanner: false,
-      theme: FolkloriaTheme.lightTheme,
-      darkTheme: FolkloriaTheme.darkTheme,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+  State<MyApp> createState() => _MyAppState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+    return Consumer<DarkModeStateProvider>(
+      builder: (context, darkModeStateProvider, child) {
+        return MaterialApp(
+          title: 'Book App',
+          debugShowCheckedModeBanner: false,
+          theme: FolkloriaTheme.lightTheme,
+          darkTheme: FolkloriaTheme.darkTheme,
+          themeMode: darkModeStateProvider.darkModeState.isEnable
+              ? ThemeMode.dark
+              : ThemeMode.light,
+          initialRoute: widget.initialRoute,
+          routes: {
+            NavigationRoute.mainRoute.name: (context) => const MainScreen(),
+            NavigationRoute.detailRoute.name: (context) => DetailScreen(
+              bookId: ModalRoute.of(context)?.settings.arguments as String,
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+          },
+        );
+      },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    final darkModeStateProvider = context.read<DarkModeStateProvider>();
+    final sharedPreferencesProvider = context.read<SharedPreferencesProvider>();
+    Future.microtask(() async {
+      sharedPreferencesProvider.getDarkModeValue();
+      final darkMode = sharedPreferencesProvider.darkMode;
+
+      if (darkMode != null) {
+        darkModeStateProvider.darkModeState = dms.BoolExtension(
+          darkMode.darkModeEnable,
+        ).isEnable;
+      }
+    });
   }
 }
