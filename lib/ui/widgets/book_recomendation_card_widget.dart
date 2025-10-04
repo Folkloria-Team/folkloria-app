@@ -16,35 +16,61 @@ class BookRecomendationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Column(
-        children: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: 10,
-            children: [
-              Image.network(
-                '$baseUrl/images/small/${book.pictureId}',
-                width: 142,
-                height: 200,
-                fit: BoxFit.cover,
+      child: SizedBox(
+        width: 140, // Fixed width to prevent overflow
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 140,
+              height: 200,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  '$baseUrl/images/small/${book.pictureId}',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: Colors.grey[200],
+                      child: const Icon(
+                        Icons.book,
+                        size: 40,
+                        color: Colors.grey,
+                      ),
+                    );
+                  },
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      color: Colors.grey[200],
+                      child: const Center(child: CircularProgressIndicator()),
+                    );
+                  },
+                ),
               ),
-              const SizedBox(height: 8),
-              Text(
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              width: 140,
+              child: Text(
                 book.name,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 14,
                   fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w700,
-                  height: 1.43,
+                  fontWeight: FontWeight.w800,
+                  height: 1.2,
                   letterSpacing: 0.25,
                 ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.start,
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

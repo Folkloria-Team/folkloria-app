@@ -4,9 +4,13 @@ import 'package:folkloria/ui/widgets/book_recomendation_card_widget.dart';
 import 'package:folkloria/common/static/navigation_route.dart';
 
 class RecomendationBook extends StatelessWidget {
-  const RecomendationBook({super.key, required this.bookList});
-
   final List<Book> bookList;
+  final String title;
+  const RecomendationBook({
+    super.key,
+    required this.bookList,
+    this.title = 'Rekomendasi Buku',
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,36 +19,54 @@ class RecomendationBook extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Rekomendasi Buku',
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 22,
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w700,
-                height: 1.27,
+            Expanded(
+              child: Text(
+                title,
+                textAlign: TextAlign.start,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.w800,
+                  height: 1.27,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
               ),
             ),
-            TextButton.icon(
-              onPressed: () {
-                // Navigator.pushNamed(
-                // context,
-                // NavigationRoute.recommendationRoute.name,
-                // );
-              },
-              icon: const Icon(Icons.arrow_forward, color: Colors.black),
-              iconAlignment: IconAlignment.end,
-              label: const Text(
-                'Lihat Semua',
-                textAlign: TextAlign.center,
-                style: TextStyle(
+            const SizedBox(width: 8),
+            Flexible(
+              child: TextButton.icon(
+                onPressed: () {
+                  // Navigator.pushNamed(
+                  // context,
+                  // NavigationRoute.recommendationRoute.name,
+                  // );
+                },
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                icon: const Icon(
+                  Icons.arrow_forward,
                   color: Colors.black,
-                  fontSize: 12,
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w400,
-                  height: 1.33,
-                  letterSpacing: 0.40,
+                  size: 16,
+                ),
+                iconAlignment: IconAlignment.end,
+                label: const Text(
+                  'Lihat Semua',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 12,
+                    fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w400,
+                    height: 1.33,
+                    letterSpacing: 0.40,
+                  ),
                 ),
               ),
             ),
@@ -53,27 +75,36 @@ class RecomendationBook extends StatelessWidget {
         const SizedBox(height: 8.0),
         SizedBox(
           height: 250.0,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: bookList.length,
-            itemBuilder: (context, index) {
-              final book = bookList[index];
+          child: bookList.isEmpty
+              ? const Center(
+                  child: Text(
+                    'Tidak ada buku tersedia',
+                    style: TextStyle(color: Colors.grey, fontSize: 14),
+                  ),
+                )
+              : ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: bookList.length,
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, index) {
+                    final book = bookList[index];
 
-              return Padding(
-                padding: const EdgeInsets.only(right: 10.0),
-                child: BookRecomendationCard(
-                  book: book,
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      NavigationRoute.detailRoute.name,
-                      arguments: book.id,
+                    return Container(
+                      width: 140, // Fixed width to prevent overflow
+                      margin: const EdgeInsets.only(right: 10.0),
+                      child: BookRecomendationCard(
+                        book: book,
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            NavigationRoute.detailRoute.name,
+                            arguments: book.id,
+                          );
+                        },
+                      ),
                     );
                   },
                 ),
-              );
-            },
-          ),
         ),
       ],
     );
