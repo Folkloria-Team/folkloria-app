@@ -4,7 +4,7 @@ import 'package:folkloria/ui/screens/favorite/favorite_screen.dart';
 import 'package:folkloria/ui/screens/home/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:folkloria/ui/screens/setting/setting_page.dart';
-// import 'package:floaty_nav_bar/floaty_nav_bar.dart';
+import 'package:folkloria/ui/widgets/bottom_item_nav_widget.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -33,25 +33,57 @@ class _MainScreenState extends State<MainScreen> {
         child: ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(80)),
           child: BottomNavigationBar(
+            backgroundColor: const Color(0xFFF0EEE2),
             currentIndex: context.watch<IndexNavProvider>().indexBottomNavBar,
             onTap: (index) {
               context.read<IndexNavProvider>().setIndextBottomNavBar = index;
             },
-            items: const [
+            type: BottomNavigationBarType.fixed,
+            selectedItemColor: const Color(
+              0xFF1D1B20,
+            ), // Putih untuk text yang dipilih
+            unselectedItemColor: const Color(
+              0xFF45492F,
+            ), // Hijau tua untuk text yang tidak dipilih
+            selectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+              color: Colors.white, // Putih untuk label yang dipilih
+            ),
+            unselectedLabelStyle: const TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: 11,
+              color: Color(
+                0xFF45492F,
+              ), // Hijau tua untuk label yang tidak dipilih
+            ),
+            items: [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: "Home",
-                tooltip: "Home",
+                icon: BottomItemNavWidget(
+                  icon: Icons.location_on,
+                  isSelected:
+                      context.watch<IndexNavProvider>().indexBottomNavBar == 0,
+                ),
+                label: "Beranda",
+                tooltip: "Beranda",
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.bookmark),
-                label: "Favorites",
-                tooltip: "Favorites",
+                icon: BottomItemNavWidget(
+                  icon: Icons.bookmark_outline,
+                  isSelected:
+                      context.watch<IndexNavProvider>().indexBottomNavBar == 1,
+                ),
+                label: "Buku",
+                tooltip: "Buku",
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: "Settings",
-                tooltip: "Settings",
+                icon: BottomItemNavWidget(
+                  icon: Icons.person_outline,
+                  isSelected:
+                      context.watch<IndexNavProvider>().indexBottomNavBar == 2,
+                ),
+                label: "Profil",
+                tooltip: "Profil",
               ),
             ],
           ),

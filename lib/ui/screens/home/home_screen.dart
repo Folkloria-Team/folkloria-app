@@ -28,9 +28,52 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Beranda', style: TextStyle(color: Colors.white)),
-        centerTitle: true,
         backgroundColor: const Color(0xFF45492F),
+        elevation: 0,
+        toolbarHeight: 80,
+        title: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Halo Alan',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              SizedBox(height: 4),
+              Text(
+                'Selamat datang!',
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.9),
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+        titleSpacing: 20,
+        actions: [
+          Container(
+            margin: EdgeInsets.only(right: 20),
+            child: CircleAvatar(
+              radius: 20,
+              backgroundColor: Colors.purple.shade400,
+              child: Text(
+                'A',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       backgroundColor: Colors.white,
       body: Column(
@@ -67,12 +110,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: Column(
                             children: [
-                              RecomendationBook(bookList: bookList),
-                              SizedBox(height: 20),
-                              RecomendationBook(bookList: bookList),
-                              SizedBox(height: 20),
-                              RecomendationBook(bookList: bookList),
-                              SizedBox(height: 20),
+                              RecomendationBook(
+                                title: 'Pulau Jawa',
+                                bookList: bookList,
+                              ),
+                              SizedBox(height: 12),
+                              RecomendationBook(
+                                title: 'Pulau Sumatera',
+                                bookList: bookList,
+                              ),
+                              SizedBox(height: 12),
+                              RecomendationBook(
+                                title: 'Pulau Kalimantan',
+                                bookList: bookList,
+                              ),
+                              SizedBox(height: 48),
                             ],
                           ),
                         ),
@@ -87,6 +139,24 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(bottom: 84.0),
+        child: FloatingActionButton.extended(
+          onPressed: () {
+            // Action when the button is pressed
+          },
+          backgroundColor: const Color(0xFF596420),
+          icon: const Icon(Icons.location_on, color: Colors.white),
+          label: Text(
+            'Mode Peta',
+            style: TextStyle(
+              color: Colors.white,
+              // fontSize: 10,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
       ),
     );
   }
