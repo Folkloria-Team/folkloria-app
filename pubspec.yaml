@@ -43,3 +43,5 @@ flutter:
           weight: 200
         - asset: assets/fonts/IBMPlexSansCondensed-Thin.ttf
           weight: 100
+  assets:
+    - assets/images/

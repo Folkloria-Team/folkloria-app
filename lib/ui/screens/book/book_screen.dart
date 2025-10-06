@@ -78,60 +78,92 @@ class _BookScreenState extends State<BookScreen> {
                             );
                           },
                         ),
-                        _ => const Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.favorite_border,
-                                size: 64,
-                                color: Colors.grey,
+                        _ => Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.primary,
+                                width: 2.0,
                               ),
-                              SizedBox(height: 16),
-                              Text(
-                                "Belum ada buku favorit",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey,
-                                ),
+                              borderRadius: BorderRadius.circular(
+                                16.0,
+                              ), // Ubah nilai ini untuk mengatur radius
+                            ),
+                            margin: const EdgeInsets.fromLTRB(20, 20, 20, 120),
+                            padding: const EdgeInsets.all(24.0),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Image(
+                                    image: AssetImage(
+                                      'images/illustration_book.png',
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    "Baca lagi nanti",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    "Buku yang kamu simpan akan tersusun rapi di rak buku.",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(fontWeight: FontWeight.w400),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 8),
-                              Text(
-                                "Tambahkan buku ke favorit untuk melihatnya di sini",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
+                            ),
                           ),
                         ),
                       };
                     },
                   ),
                   // Tab Unduhan
-                  const Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.download_outlined,
-                          size: 64,
-                          color: Colors.grey,
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.primary,
+                          width: 2.0,
                         ),
-                        SizedBox(height: 16),
-                        Text(
-                          "Belum ada buku yang diunduh",
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(
+                          16.0,
+                        ), // Ubah nilai ini untuk mengatur radius
+                      ),
+                      margin: const EdgeInsets.fromLTRB(20, 20, 20, 120),
+                      padding: const EdgeInsets.all(24.0),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Image(
+                              image: AssetImage(
+                                'images/illustration_open_book.png',
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              "Kamu belum mengunduh..",
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              "Unduh buku cerita untuk dibaca secara luring!",
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.w400),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
                         ),
-                        SizedBox(height: 8),
-                        Text(
-                          "Unduh buku untuk membacanya secara offline",
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ],
@@ -143,4 +175,3 @@ class _BookScreenState extends State<BookScreen> {
     );
   }
 }
-
