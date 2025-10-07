@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:folkloria/data/services/api_service.dart';
 import 'package:folkloria/data/services/local_database_service.dart';
 import 'package:folkloria/providers/detail/book_detail_provider.dart';
-import 'package:folkloria/providers/favorite/local_database_provider.dart';
+import 'package:folkloria/providers/book/local_database_provider.dart';
 import 'package:folkloria/providers/home/book_list_provider.dart';
 import 'package:folkloria/providers/main/index_nav_provider.dart';
 import 'package:folkloria/ui/screens/detail/detail_screen.dart';

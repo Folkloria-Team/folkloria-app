@@ -16,6 +16,7 @@ dependencies:
   shared_preferences: ^2.5.3
   sqflite: ^2.4.2
   path_provider: ^2.1.5
+  google_fonts: ^6.3.2
 
 dev_dependencies:
   flutter_test:
@@ -43,3 +44,6 @@ flutter:
           weight: 200
         - asset: assets/fonts/IBMPlexSansCondensed-Thin.ttf
           weight: 100
+  assets:
+    - assets/
+    - assets/images/

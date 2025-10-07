@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:folkloria/providers/main/index_nav_provider.dart';
-import 'package:folkloria/ui/screens/favorite/favorite_screen.dart';
+import 'package:folkloria/ui/screens/book/book_screen.dart';
 import 'package:folkloria/ui/screens/home/home_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:folkloria/ui/screens/setting/setting_page.dart';
@@ -21,7 +21,7 @@ class _MainScreenState extends State<MainScreen> {
         builder: (context, value, child) {
           return switch (value.indexBottomNavBar) {
             0 => const HomeScreen(),
-            1 => const FavoriteScreen(),
+            1 => const BookScreen(),
             _ => const SettingPage(),
           };
         },
