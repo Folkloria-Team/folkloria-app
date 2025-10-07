@@ -23,6 +23,7 @@ class _BookScreenState extends State<BookScreen> {
     Future.microtask(() {
       if (mounted) {
         context.read<LocalDatabaseProvider>().loadAllFavoriteValue();
+        context.read<LocalDatabaseProvider>().loadAllDownloadValue();
       }
     });
   }
@@ -106,10 +107,50 @@ class _BookScreenState extends State<BookScreen> {
                     },
                   ),
                   // Tab Unduhan
-                  const BookListEmptyWidget(
-                    imagePath: 'assets/images/illustration_open_book.png',
-                    title: "Kamu belum mengunduh..",
-                    subtitle: "Unduh buku cerita untuk dibaca secara luring!",
+                  Consumer<LocalDatabaseProvider>(
+                    builder: (context, value, child) {
+                      final downloadList = value.downloadList ?? [];
+
+                      return switch (downloadList.isNotEmpty) {
+                        true => GridView.builder(
+                          padding: const EdgeInsets.fromLTRB(
+                            16.0, // left
+                            16.0, // top
+                            16.0, // right
+                            100.0, // bottom - jarak untuk bottom navigation
+                          ),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2, // 2 kolom
+                                crossAxisSpacing: 16.0, // Jarak antar kolom
+                                mainAxisSpacing: 16.0, // Jarak antar baris
+                                childAspectRatio:
+                                    0.65, // Rasio lebar:tinggi - optimized untuk grid card
+                              ),
+                          itemCount: downloadList.length,
+                          itemBuilder: (context, index) {
+                            final book = downloadList[index];
+
+                            return BookCard(
+                              book: book,
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  NavigationRoute.detailRoute.name,
+                                  arguments: book.id,
+                                );
+                              },
+                            );
+                          },
+                        ),
+                        _ => const BookListEmptyWidget(
+                          imagePath: 'assets/images/illustration_open_book.png',
+                          title: "Kamu belum mengunduh..",
+                          subtitle:
+                              "Unduh buku cerita untuk dibaca secara luring!",
+                        ),
+                      };
+                    },
                   ),
                 ],
               ),
