@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:folkloria/common/style/colors/folkloria_colors.dart';
+import 'package:folkloria/common/style/typography/folkloria_text_styles.dart';
+import 'package:folkloria/ui/screens/book/book_list_empty_widget.dart';
+import 'package:folkloria/ui/widgets/book_card_widget.dart';
 import 'package:folkloria/ui/widgets/book_tab_bar_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:folkloria/providers/book/local_database_provider.dart';
 import 'package:folkloria/common/static/navigation_route.dart';
-import 'package:folkloria/ui/widgets/book_card_widget.dart';
+import 'package:folkloria/common/static/constants.dart';
 
 class BookScreen extends StatefulWidget {
   const BookScreen({super.key});
@@ -17,7 +21,9 @@ class _BookScreenState extends State<BookScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      context.read<LocalDatabaseProvider>().loadAllFavoriteValue();
+      if (mounted) {
+        context.read<LocalDatabaseProvider>().loadAllFavoriteValue();
+      }
     });
   }
 
@@ -30,14 +36,13 @@ class _BookScreenState extends State<BookScreen> {
           centerTitle: true,
           title: Text(
             "Buku Saya",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+            style: FolkloriaTextStyles.titleLarge.copyWith(
+              color: Theme.of(context).colorScheme.onTertiary,
             ),
           ),
-          backgroundColor: const Color(0xFF45492F),
+          backgroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
         ),
+        backgroundColor: Theme.of(context).colorScheme.onTertiary,
         body: Column(
           children: [
             // Tab Bar dengan styling custom
@@ -45,7 +50,7 @@ class _BookScreenState extends State<BookScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               height: 48,
               decoration: BoxDecoration(
-                color: const Color(0xFF46483B),
+                color: FolkloriaColors.onSurfaceVariant,
                 borderRadius: BorderRadius.circular(24),
               ),
               child: TabBarWidget(),
@@ -60,8 +65,21 @@ class _BookScreenState extends State<BookScreen> {
                       final favoriteList = value.favoriteList ?? [];
 
                       return switch (favoriteList.isNotEmpty) {
-                        true => ListView.builder(
-                          padding: const EdgeInsets.all(8.0),
+                        true => GridView.builder(
+                          padding: const EdgeInsets.fromLTRB(
+                            16.0, // left
+                            16.0, // top
+                            16.0, // right
+                            100.0, // bottom - jarak untuk bottom navigation
+                          ),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2, // 2 kolom
+                                crossAxisSpacing: 16.0, // Jarak antar kolom
+                                mainAxisSpacing: 16.0, // Jarak antar baris
+                                childAspectRatio:
+                                    0.65, // Rasio lebar:tinggi - optimized untuk grid card
+                              ),
                           itemCount: favoriteList.length,
                           itemBuilder: (context, index) {
                             final book = favoriteList[index];
@@ -78,93 +96,20 @@ class _BookScreenState extends State<BookScreen> {
                             );
                           },
                         ),
-                        _ => Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Theme.of(context).colorScheme.primary,
-                                width: 2.0,
-                              ),
-                              borderRadius: BorderRadius.circular(
-                                16.0,
-                              ), // Ubah nilai ini untuk mengatur radius
-                            ),
-                            margin: const EdgeInsets.fromLTRB(20, 20, 20, 120),
-                            padding: const EdgeInsets.all(24.0),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Image(
-                                    image: AssetImage(
-                                      'images/illustration_book.png',
-                                    ),
-                                  ),
-                                  const SizedBox(height: 16),
-                                  Text(
-                                    "Baca lagi nanti",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium
-                                        ?.copyWith(fontWeight: FontWeight.bold),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    "Buku yang kamu simpan akan tersusun rapi di rak buku.",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(fontWeight: FontWeight.w400),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                        _ => const BookListEmptyWidget(
+                          imagePath: 'assets/images/illustration_book.png',
+                          title: "Baca lagi nanti",
+                          subtitle:
+                              "Buku yang kamu simpan akan tersusun rapi di rak buku.",
                         ),
                       };
                     },
                   ),
                   // Tab Unduhan
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Theme.of(context).colorScheme.primary,
-                          width: 2.0,
-                        ),
-                        borderRadius: BorderRadius.circular(
-                          16.0,
-                        ), // Ubah nilai ini untuk mengatur radius
-                      ),
-                      margin: const EdgeInsets.fromLTRB(20, 20, 20, 120),
-                      padding: const EdgeInsets.all(24.0),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Image(
-                              image: AssetImage(
-                                'images/illustration_open_book.png',
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              "Kamu belum mengunduh..",
-                              style: Theme.of(context).textTheme.titleMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              "Unduh buku cerita untuk dibaca secara luring!",
-                              style: Theme.of(context).textTheme.bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.w400),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                  const BookListEmptyWidget(
+                    imagePath: 'assets/images/illustration_open_book.png',
+                    title: "Kamu belum mengunduh..",
+                    subtitle: "Unduh buku cerita untuk dibaca secara luring!",
                   ),
                 ],
               ),

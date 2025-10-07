@@ -5,8 +5,7 @@ import 'package:folkloria/common/style/typography/folkloria_text_styles.dart';
 class FolkloriaTheme {
   static ThemeData get lightTheme {
     return ThemeData(
-      colorSchemeSeed: FolkloriaColors.green.color,
-      brightness: Brightness.light,
+      colorScheme: FolkloriaColors.lightColorScheme,
       textTheme: _textTheme,
       useMaterial3: true,
       appBarTheme: _appBarTheme,
@@ -15,8 +14,7 @@ class FolkloriaTheme {
 
   static ThemeData get darkTheme {
     return ThemeData(
-      colorSchemeSeed: FolkloriaColors.green.color,
-      brightness: Brightness.dark,
+      colorScheme: FolkloriaColors.darkColorScheme,
       textTheme: _textTheme,
       useMaterial3: true,
       appBarTheme: _appBarTheme,
