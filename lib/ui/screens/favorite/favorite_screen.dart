@@ -15,7 +15,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<LocalDatabaseProvider>().loadAllFavoriteValue();
     });
   }
