@@ -16,13 +16,13 @@ class BookDetailProvider extends ChangeNotifier {
       _resultState = BookDetailLoadingState();
       notifyListeners();
 
-      final result = await _apiServices.getBookDetail(id);
+      final result = await _apiServices.getStoryDetail(id);
 
-      if (result.error) {
+      if (result.message.isEmpty) {
         _resultState = BookDetailErrorState(result.message);
         notifyListeners();
       } else {
-        _resultState = BookDetailLoadedState(result.bookDetail);
+        _resultState = BookDetailLoadedState(result.data);
         notifyListeners();
       }
     } on Exception catch (e) {

@@ -1,4 +1,5 @@
-import 'package:folkloria/data/models/book.dart';
+// import 'package:folkloria/data/models/book.dart';
+import 'package:folkloria/data/models/story.dart';
 
 sealed class BookListResultState {}
 
@@ -13,7 +14,7 @@ class BookListErrorState extends BookListResultState {
 }
 
 class BookListLoadedState extends BookListResultState {
-  final List<Book> data;
+  final List<Story> data;
 
   BookListLoadedState(this.data);
 }

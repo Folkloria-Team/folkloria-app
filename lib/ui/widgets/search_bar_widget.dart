@@ -50,7 +50,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
     _debounceTimer = Timer(const Duration(milliseconds: 300), () {
       if (mounted) {
         final provider = context.read<BookListProvider>();
-        provider.searchBooks(_searchController.text);
+        // provider.searchBooks(_searchController.text);
       }
     });
   }
@@ -71,7 +71,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
     });
     if (mounted) {
       final provider = context.read<BookListProvider>();
-      provider.searchBooks(query);
+      // provider.searchBooks(query);
     }
   }
 

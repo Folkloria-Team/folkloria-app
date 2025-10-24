@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:folkloria/common/style/typography/folkloria_text_styles.dart';
-import 'package:folkloria/data/models/book.dart';
+// import 'package:folkloria/data/models/book.dart';
 import 'package:folkloria/common/static/constants.dart';
+import 'package:folkloria/data/models/story.dart';
 
 class BookCard extends StatelessWidget {
-  final Book book;
+  final Story book;
   final Function() onTap;
 
   const BookCard({super.key, required this.book, required this.onTap});
@@ -23,7 +24,7 @@ class BookCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
-                  '$baseUrl/images/small/${book.pictureId}',
+                  'https://bekup-api.radifa.my.id/api${book.cover}',
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
@@ -48,7 +49,7 @@ class BookCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            book.name,
+            book.title,
             style: FolkloriaTextStyles.bodyLargeBold,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -56,7 +57,7 @@ class BookCard extends StatelessWidget {
           ),
           const SizedBox(height: 1),
           Text(
-            book.city,
+            book.island,
             style: FolkloriaTextStyles.bodyLargeMedium,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,

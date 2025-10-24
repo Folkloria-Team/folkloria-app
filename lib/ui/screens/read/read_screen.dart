@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:folkloria/data/models/book_detail.dart';
+import 'package:folkloria/data/models/story_detail.dart';
 import 'package:folkloria/ui/screens/read/result_screen.dart';
 
 class ReadScreen extends StatefulWidget {
-  final BookDetail bookDetail;
+  final StoryDetail bookDetail;
 
   const ReadScreen({super.key, required this.bookDetail});
 
@@ -33,8 +34,8 @@ class _ReadScreenState extends State<ReadScreen> {
               context,
               MaterialPageRoute(
                 builder: (_) => ResultScreen(
-                  title: widget.bookDetail.name,
-                  region: widget.bookDetail.city,
+                  title: widget.bookDetail.title,
+                  region: widget.bookDetail.island,
                 ),
               ),
             );
@@ -53,8 +54,7 @@ class _ReadScreenState extends State<ReadScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final imageUrl =
-        'https://restaurant-api.dicoding.dev/images/medium/${widget.bookDetail.pictureId}';
+    final imageUrl = 'https://bekup-api.radifa.my.id/api${widget.bookDetail.cover}';
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
@@ -158,14 +158,14 @@ class _ReadScreenState extends State<ReadScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.bookDetail.name,
+                        widget.bookDetail.title,
                         style: theme.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        widget.bookDetail.city,
+                        widget.bookDetail.island,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: theme.colorScheme.primary,
                         ),
@@ -183,7 +183,7 @@ class _ReadScreenState extends State<ReadScreen> {
                     vertical: 24,
                   ),
                   child: Text(
-                    widget.bookDetail.description,
+                    widget.bookDetail.content,
                     style: theme.textTheme.bodyLarge?.copyWith(height: 1.6),
                     textAlign: TextAlign.justify,
                   ),

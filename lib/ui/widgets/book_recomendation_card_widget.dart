@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:folkloria/data/models/book.dart';
 import 'package:folkloria/common/static/constants.dart';
+import 'package:folkloria/data/models/story.dart';
 
 class BookRecomendationCard extends StatelessWidget {
-  final Book book;
+  final Story book;
   final Function() onTap;
 
   const BookRecomendationCard({
@@ -29,7 +30,7 @@ class BookRecomendationCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
-                  '$baseUrl/images/small/${book.pictureId}',
+                  'https://bekup-api.radifa.my.id/api${book.cover}',
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
@@ -55,7 +56,7 @@ class BookRecomendationCard extends StatelessWidget {
             SizedBox(
               width: 140,
               child: Text(
-                book.name,
+                book.title,
                 style: const TextStyle(
                   color: Colors.black,
                   fontSize: 14,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:folkloria/data/models/book_detail.dart';
+import 'package:folkloria/data/models/story.dart';
+// import 'package:folkloria/data/models/book_detail.dart';
+import 'package:folkloria/data/models/story_detail.dart';
 import 'package:folkloria/ui/screens/read/read_screen.dart';
 import 'package:folkloria/providers/detail/download_icon_provider.dart';
 import 'package:folkloria/ui/widgets/download_icon_widget.dart';
@@ -11,13 +13,12 @@ import 'package:folkloria/common/static/book_detail_result_state.dart';
 import 'package:folkloria/ui/widgets/favorite_icon_widget.dart';
 
 class BodyOfDetailScreenWidget extends StatelessWidget {
-  final BookDetail bookDetail;
+  final StoryDetail bookDetail;
   const BodyOfDetailScreenWidget({super.key, required this.bookDetail});
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl =
-        'https://restaurant-api.dicoding.dev/images/medium/${bookDetail.pictureId}';
+    final imageUrl = 'https://bekup-api.radifa.my.id/api${bookDetail.cover}';
 
     return SingleChildScrollView(
       child: Padding(
@@ -29,7 +30,7 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: Image.network(
-                'https://restaurant-api.dicoding.dev/images/medium/${bookDetail.pictureId}',
+                'https://bekup-api.radifa.my.id/api${bookDetail.cover}',
                 width: double.infinity,
                 height: 300,
                 fit: BoxFit.cover,
@@ -49,7 +50,7 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
 
             // Judul buku
             Text(
-              bookDetail.name,
+              bookDetail.title,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
@@ -60,7 +61,7 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
 
             // Asal daerah
             Text(
-              bookDetail.city,
+              bookDetail.island,
               textAlign: TextAlign.center,
               style: Theme.of(
                 context,
@@ -79,13 +80,14 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                       return switch (value.resultState) {
                         BookDetailLoadedState(data: var bookDetail) =>
                           DownloadIconWidget(
-                            book: Book(
+                            book: Story(
                               id: bookDetail.id,
-                              name: bookDetail.name,
-                              description: bookDetail.description,
-                              pictureId: bookDetail.pictureId,
-                              city: bookDetail.city,
-                              rating: bookDetail.rating,
+                              provinceId: bookDetail.provinceId,
+                              title: bookDetail.title,
+                              sinopsis: bookDetail.sinopsis,
+                              content: bookDetail.content,
+                              cover: bookDetail.cover,
+                              island: bookDetail.island,
                             ),
                           ),
                         _ => const SizedBox(),
@@ -126,13 +128,14 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                       return switch (value.resultState) {
                         BookDetailLoadedState(data: var bookDetail) =>
                           FavoriteIconWidget(
-                            book: Book(
+                            book: Story(
                               id: bookDetail.id,
-                              name: bookDetail.name,
-                              description: bookDetail.description,
-                              pictureId: bookDetail.pictureId,
-                              city: bookDetail.city,
-                              rating: bookDetail.rating,
+                              provinceId: bookDetail.provinceId,
+                              title: bookDetail.title,
+                              sinopsis: bookDetail.sinopsis,
+                              content: bookDetail.content,
+                              cover: bookDetail.cover,
+                              island: bookDetail.island,
                             ),
                           ),
                         _ => const SizedBox(),
@@ -157,7 +160,7 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              bookDetail.description,
+              bookDetail.sinopsis,
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.justify,
             ),

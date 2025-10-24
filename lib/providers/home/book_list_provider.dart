@@ -1,7 +1,8 @@
 import 'package:flutter/widgets.dart';
+import 'package:folkloria/data/models/story.dart';
 import 'package:folkloria/data/services/api_service.dart';
 import 'package:folkloria/common/static/book_list_result_state.dart';
-import 'package:folkloria/data/models/book.dart';
+// import 'package:folkloria/data/models/book.dart';
 
 class BookListProvider extends ChangeNotifier {
   final ApiServices _apiServices;
@@ -9,7 +10,7 @@ class BookListProvider extends ChangeNotifier {
   BookListProvider(this._apiServices);
 
   BookListResultState _resultState = BookListNoneState();
-  List<Book> _originalBookList = [];
+  List<Story> _originalBookList = [];
   String _searchQuery = '';
   List<String> _searchHistory = [];
 
@@ -22,14 +23,14 @@ class BookListProvider extends ChangeNotifier {
       _resultState = BookListLoadingState();
       notifyListeners();
 
-      final result = await _apiServices.getBookList();
+      final result = await _apiServices.getStoryList();
 
-      if (result.error) {
+      if (result.data.isEmpty) {
         _resultState = BookListErrorState(result.message);
         notifyListeners();
       } else {
-        _originalBookList = result.book;
-        _resultState = BookListLoadedState(result.book);
+        _originalBookList = result.data;
+        _resultState = BookListLoadedState(result.data);
         notifyListeners();
       }
     } on Exception catch (e) {
@@ -38,39 +39,39 @@ class BookListProvider extends ChangeNotifier {
     }
   }
 
-  void searchBooks(String query) async {
-    _searchQuery = query;
+  // void searchBooks(String query) async {
+  //   _searchQuery = query;
 
-    // Add to search history if not empty and not already exists
-    if (query.trim().isNotEmpty && !_searchHistory.contains(query.trim())) {
-      _searchHistory.insert(0, query.trim());
-      // Keep only last 10 searches
-      if (_searchHistory.length > 10) {
-        _searchHistory = _searchHistory.take(10).toList();
-      }
-    }
+  //   // Add to search history if not empty and not already exists
+  //   if (query.trim().isNotEmpty && !_searchHistory.contains(query.trim())) {
+  //     _searchHistory.insert(0, query.trim());
+  //     // Keep only last 10 searches
+  //     if (_searchHistory.length > 10) {
+  //       _searchHistory = _searchHistory.take(10).toList();
+  //     }
+  //   }
 
-    if (query.isEmpty) {
-      _resultState = BookListLoadedState(_originalBookList);
-    } else {
-      try {
-        _resultState = BookListLoadingState();
-        notifyListeners();
+  //   if (query.isEmpty) {
+  //     _resultState = BookListLoadedState(_originalBookList);
+  //   } else {
+  //     try {
+  //       _resultState = BookListLoadingState();
+  //       notifyListeners();
 
-        final result = await _apiServices.searchBooks(query);
+  //       final result = await _apiServices.searchBooks(query);
 
-        if (result.error) {
-          _resultState = BookListErrorState(result.message);
-        } else {
-          _resultState = BookListLoadedState(result.restaurants);
-        }
-      } catch (e) {
-        _resultState = BookListErrorState(e.toString());
-      }
-    }
+  //       if (result.error) {
+  //         _resultState = BookListErrorState(result.message);
+  //       } else {
+  //         _resultState = BookListLoadedState(result.restaurants);
+  //       }
+  //     } catch (e) {
+  //       _resultState = BookListErrorState(e.toString());
+  //     }
+  //   }
 
-    notifyListeners();
-  }
+  //   notifyListeners();
+  // }
 
   void clearSearch() {
     _searchQuery = '';

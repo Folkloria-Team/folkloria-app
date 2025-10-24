@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:folkloria/data/services/local_database_service.dart';
-import 'package:folkloria/data/models/book.dart';
+import 'package:folkloria/data/models/story.dart';
 
 class LocalDatabaseProvider extends ChangeNotifier {
   final LocalDatabaseService _service;
@@ -10,16 +10,16 @@ class LocalDatabaseProvider extends ChangeNotifier {
   String _message = "";
   String get message => _message;
 
-  List<Book>? _favoriteList;
-  List<Book>? get favoriteList => _favoriteList;
+  List<Story>? _favoriteList;
+  List<Story>? get favoriteList => _favoriteList;
 
-  List<Book>? _downloadList;
-  List<Book>? get downloadList => _downloadList;
+  List<Story>? _downloadList;
+  List<Story>? get downloadList => _downloadList;
 
-  Book? _book;
-  Book? get book => _book;
+  Story? _story;
+  Story? get story => _story;
 
-  Future<void> saveFavoriteValue(Book value) async {
+  Future<void> saveFavoriteValue(Story value) async {
     try {
       final result = await _service.insertItemFavorite(value);
 
@@ -50,7 +50,7 @@ class LocalDatabaseProvider extends ChangeNotifier {
 
   Future<void> loadFavoriteValueById(String id) async {
     try {
-      _book = await _service.getItemFavoriteById(id);
+      _story = await _service.getItemFavoriteById(id);
       _message = "Your data is loaded";
       notifyListeners();
     } catch (e) {
@@ -73,12 +73,12 @@ class LocalDatabaseProvider extends ChangeNotifier {
   }
 
   bool checkItemFavorite(String id) {
-    final isSameFavorite = _book?.id == id;
+    final isSameFavorite = _story?.id == id;
     return isSameFavorite;
   }
 
   // Download Table Operations
-  Future<void> saveDownloadValue(Book value) async {
+  Future<void> saveDownloadValue(Story value) async {
     try {
       final result = await _service.insertItemDownload(value);
 
@@ -109,7 +109,7 @@ class LocalDatabaseProvider extends ChangeNotifier {
 
   Future<void> loadDownloadValueById(String id) async {
     try {
-      _book = await _service.getItemDownloadById(id);
+      _story = await _service.getItemDownloadById(id);
       _message = "Your data is loaded";
       notifyListeners();
     } catch (e) {
@@ -132,7 +132,7 @@ class LocalDatabaseProvider extends ChangeNotifier {
   }
 
   bool checkItemDownload(String id) {
-    final isSameBook = _book?.id == id;
-    return isSameBook;
+    final isSameStory = _story?.id == id;
+    return isSameStory;
   }
 }

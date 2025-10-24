@@ -17,6 +17,8 @@ class SharedPreferencesService {
   }
 
   DarkMode getDarkModeValue() {
-    return DarkMode(darkModeEnable: _preferences.getBool(_keyDarkMode) ?? true);
+    return DarkMode(
+      darkModeEnable: _preferences.getBool(_keyDarkMode) ?? false,
+    );
   }
 }
