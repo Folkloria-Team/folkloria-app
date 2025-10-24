@@ -35,50 +35,8 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Book Detail"),
         actions: [
-          ChangeNotifierProvider(
-            create: (context) => FavoriteIconProvider(),
-            child: Consumer<BookDetailProvider>(
-              builder: (context, value, child) {
-                return switch (value.resultState) {
-                  BookDetailLoadedState(data: var bookDetail) =>
-                    FavoriteIconWidget(
-                      book: Book(
-                        id: bookDetail.id,
-                        name: bookDetail.name,
-                        description: bookDetail.description,
-                        pictureId: bookDetail.pictureId,
-                        city: bookDetail.city,
-                        rating: bookDetail.rating,
-                      ),
-                    ),
-                  _ => const SizedBox(),
-                };
-              },
-            ),
-          ),
-          ChangeNotifierProvider(
-            create: (context) => DownloadIconProvider(),
-            child: Consumer<BookDetailProvider>(
-              builder: (context, value, child) {
-                return switch (value.resultState) {
-                  BookDetailLoadedState(data: var bookDetail) =>
-                    DownloadIconWidget(
-                      book: Book(
-                        id: bookDetail.id,
-                        name: bookDetail.name,
-                        description: bookDetail.description,
-                        pictureId: bookDetail.pictureId,
-                        city: bookDetail.city,
-                        rating: bookDetail.rating,
-                      ),
-                    ),
-                  _ => const SizedBox(),
-                };
-              },
-            ),
-          ),
+          // TODO: Tambahkan button icon share di sini nanti
         ],
       ),
       body: Consumer<BookDetailProvider>(

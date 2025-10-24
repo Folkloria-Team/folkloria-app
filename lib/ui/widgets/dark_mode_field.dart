@@ -1,3 +1,4 @@
+import 'package:folkloria/common/style/typography/folkloria_text_styles.dart';
 import 'package:folkloria/data/models/dark_mode.dart';
 import 'package:folkloria/providers/setting/shared_preferences_provider.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +17,19 @@ class DarkModeField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const TitleForm('Dark Mode:'),
+          // const TitleForm('Dark Mode:'),
           const SizedBox.square(dimension: 4),
           Consumer<DarkModeStateProvider>(
             builder: (_, provider, __) {
               final isDarkModeEnabled =
                   provider.darkModeState == DarkModeState.enable;
               return SwitchListTile(
-                title: Text(isDarkModeEnabled ? 'Dark Mode' : 'Light Mode'),
+                title: Text(
+                  'Mode Gelap',
+                  style: FolkloriaTextStyles.bodyLargeBold.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 value: isDarkModeEnabled,
                 onChanged: (value) {
                   provider.darkModeState = value
@@ -31,11 +37,6 @@ class DarkModeField extends StatelessWidget {
                       : DarkModeState.disable;
                   saveAction(context);
                 },
-                secondary: Icon(
-                  provider.darkModeState == DarkModeState.enable
-                      ? Icons.dark_mode
-                      : Icons.light_mode,
-                ),
               );
             },
           ),

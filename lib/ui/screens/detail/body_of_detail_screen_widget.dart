@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:folkloria/data/models/book_detail.dart';
 import 'package:folkloria/ui/screens/read/read_screen.dart';
+import 'package:folkloria/providers/detail/download_icon_provider.dart';
+import 'package:folkloria/ui/widgets/download_icon_widget.dart';
+import 'package:provider/provider.dart';
+import 'package:folkloria/data/models/book.dart';
+import 'package:folkloria/providers/detail/favorite_icon_provider.dart';
+import 'package:folkloria/providers/detail/book_detail_provider.dart';
+import 'package:folkloria/common/static/book_detail_result_state.dart';
+import 'package:folkloria/ui/widgets/favorite_icon_widget.dart';
 
 class BodyOfDetailScreenWidget extends StatelessWidget {
   final BookDetail bookDetail;
@@ -64,7 +72,27 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(icon: const Icon(Icons.download), onPressed: () {}),
+                ChangeNotifierProvider(
+                  create: (context) => DownloadIconProvider(),
+                  child: Consumer<BookDetailProvider>(
+                    builder: (context, value, child) {
+                      return switch (value.resultState) {
+                        BookDetailLoadedState(data: var bookDetail) =>
+                          DownloadIconWidget(
+                            book: Book(
+                              id: bookDetail.id,
+                              name: bookDetail.name,
+                              description: bookDetail.description,
+                              pictureId: bookDetail.pictureId,
+                              city: bookDetail.city,
+                              rating: bookDetail.rating,
+                            ),
+                          ),
+                        _ => const SizedBox(),
+                      };
+                    },
+                  ),
+                ),
                 const SizedBox(width: 16),
                 ElevatedButton(
                   onPressed: () {
@@ -91,9 +119,26 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 16),
-                IconButton(
-                  icon: const Icon(Icons.favorite_border),
-                  onPressed: () {},
+                ChangeNotifierProvider(
+                  create: (context) => FavoriteIconProvider(),
+                  child: Consumer<BookDetailProvider>(
+                    builder: (context, value, child) {
+                      return switch (value.resultState) {
+                        BookDetailLoadedState(data: var bookDetail) =>
+                          FavoriteIconWidget(
+                            book: Book(
+                              id: bookDetail.id,
+                              name: bookDetail.name,
+                              description: bookDetail.description,
+                              pictureId: bookDetail.pictureId,
+                              city: bookDetail.city,
+                              rating: bookDetail.rating,
+                            ),
+                          ),
+                        _ => const SizedBox(),
+                      };
+                    },
+                  ),
                 ),
               ],
             ),

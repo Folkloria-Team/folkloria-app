@@ -20,7 +20,7 @@ class _BookScreenState extends State<BookScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    Future.microtask(() {
       if (mounted) {
         context.read<LocalDatabaseProvider>().loadAllFavoriteValue();
         context.read<LocalDatabaseProvider>().loadAllDownloadValue();
