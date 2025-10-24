@@ -2,7 +2,5 @@
 class DarkMode {
   final bool darkModeEnable;
 
-  DarkMode({
-    required this.darkModeEnable,
-  });
+  DarkMode({required this.darkModeEnable});
 }

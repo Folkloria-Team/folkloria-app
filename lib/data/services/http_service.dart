@@ -7,9 +7,7 @@ import 'package:path_provider/path_provider.dart';
 class HttpService {
   final http.Client _client;
 
-  HttpService({
-    http.Client? client,
-  }) : _client = client ?? http.Client();
+  HttpService({http.Client? client}) : _client = client ?? http.Client();
 
   Future<String> getDataFromUrl(String url) async {
     try {
@@ -20,9 +18,7 @@ class HttpService {
         'Tidak ada koneksi internet. Periksa koneksi Anda dan coba lagi.',
       );
     } catch (e) {
-      throw const HttpException(
-        'Gagal mengambil data. Silakan coba lagi.',
-      );
+      throw const HttpException('Gagal mengambil data. Silakan coba lagi.');
     }
   }
 
@@ -35,9 +31,7 @@ class HttpService {
         'Tidak ada koneksi internet. Periksa koneksi Anda dan coba lagi.',
       );
     } catch (e) {
-      throw const HttpException(
-        'Gagal mengunduh file. Silakan coba lagi.',
-      );
+      throw const HttpException('Gagal mengunduh file. Silakan coba lagi.');
     }
   }
 
