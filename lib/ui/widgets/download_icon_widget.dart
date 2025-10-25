@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:folkloria/data/models/story.dart';
 import 'package:provider/provider.dart';
-import 'package:folkloria/data/models/book.dart';
 import 'package:folkloria/providers/detail/download_icon_provider.dart';
 import 'package:folkloria/providers/book/local_database_provider.dart';
 
@@ -15,41 +14,64 @@ class DownloadIconWidget extends StatefulWidget {
 }
 
 class _DownloadIconWidgetState extends State<DownloadIconWidget> {
-  @override
-  void initState() {
-    super.initState();
-    final localDatabaseProvider = context.read<LocalDatabaseProvider>();
-    final downloadIconProvider = context.read<DownloadIconProvider>();
-
-    Future.microtask(() async {
-      // todo-03-action-03: change this action using LocalDatabaseProvider
-      await localDatabaseProvider.loadDownloadValueById(widget.book.id);
-      final value = localDatabaseProvider.checkItemDownload(widget.book.id);
-      if (!mounted) return;
-      downloadIconProvider.isDownloaded = value;
-    });
-  }
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () {
-        final localDatabaseProvider = context.read<LocalDatabaseProvider>();
-        final downloadIconProvider = context.read<DownloadIconProvider>();
-        final isDownloadd = downloadIconProvider.isDownloaded;
+    final downloadProvider = context.watch<DownloadIconProvider>();
+    final localDatabaseProvider = context.read<LocalDatabaseProvider>();
 
-        if (isDownloadd) {
-          localDatabaseProvider.removeDownloadValueById(widget.book.id);
-        } else {
-          localDatabaseProvider.saveDownloadValue(widget.book);
-        }
-        downloadIconProvider.isDownloaded = !isDownloadd;
-      },
-      icon: Icon(
-        context.watch<DownloadIconProvider>().isDownloaded
-            ? Icons.delete
-            : Icons.download,
-      ),
+    final isDownloaded = downloadProvider.isStoryDownloaded(widget.book.id);
+
+    return IconButton(
+      onPressed: _isLoading
+          ? null
+          : () async {
+              setState(() => _isLoading = true);
+
+              try {
+                await downloadProvider.toggleDownload(widget.book);
+                await localDatabaseProvider.loadAllDownloadValue();
+
+                // ✅ Ambil ulang status terbaru setelah toggle selesai
+                final updatedIsDownloaded = downloadProvider.isStoryDownloaded(
+                  widget.book.id,
+                );
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      updatedIsDownloaded
+                          ? 'Buku berhasil diunduh dan bisa dibaca offline! ✅'
+                          : 'Buku dihapus dari unduhan. 🗑️',
+                    ),
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
+              } catch (e) {
+                debugPrint("⚠️ Error saat toggle download: $e");
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Terjadi kesalahan, coba lagi ya 😅"),
+                  ),
+                );
+              } finally {
+                setState(() => _isLoading = false);
+              }
+            },
+      icon: _isLoading
+          ? const SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
+          : Icon(
+              isDownloaded ? Icons.delete : Icons.download,
+              color: isDownloaded
+                  ? Colors.redAccent
+                  : Theme.of(context).iconTheme.color,
+            ),
+      tooltip: isDownloaded ? "Hapus unduhan" : "Unduh buku",
     );
   }
 }

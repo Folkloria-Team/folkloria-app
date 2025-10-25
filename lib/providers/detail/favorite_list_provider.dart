@@ -1,24 +1,28 @@
-// import 'package:flutter/widgets.dart';
-// import 'package:folkloria_latihan/data/model/restaurant.dart';
+import 'package:flutter/foundation.dart';
+import 'package:folkloria/data/models/story.dart';
 
-// class FavoriteListProvider extends ChangeNotifier {
-//   final List<Restaurant> _favoriteList = [];
- 
-//   List<Restaurant> get favoriteList => _favoriteList;
- 
-//   void addFavorite(Restaurant value) {
-//     _favoriteList.add(value);
-//     notifyListeners();
-//   }
- 
-//   void removeFavorite(Restaurant value) {
-//     _favoriteList.removeWhere((element) => element.id == value.id);
-//     notifyListeners();
-//   }
- 
-//   bool checkItemFavorite(Restaurant value) {
-//     final restaurantdetailInList =
-//         _favoriteList.where((element) => element.id == value.id);
-//     return restaurantdetailInList.isNotEmpty;
-//   }
-// }
+class FavoriteListProvider extends ChangeNotifier {
+  final List<Story> _favoriteList = [];
+
+  List<Story> get favoriteList => _favoriteList;
+
+  // Tambahkan ke daftar favorit
+  void addFavorite(Story story) {
+    final alreadyAdded = _favoriteList.any((item) => item.id == story.id);
+    if (!alreadyAdded) {
+      _favoriteList.add(story);
+      notifyListeners();
+    }
+  }
+
+  // Hapus dari daftar favorit
+  void removeFavorite(Story story) {
+    _favoriteList.removeWhere((item) => item.id == story.id);
+    notifyListeners();
+  }
+
+  // Cek apakah cerita sudah difavoritkan
+  bool checkItemFavorite(Story story) {
+    return _favoriteList.any((item) => item.id == story.id);
+  }
+}

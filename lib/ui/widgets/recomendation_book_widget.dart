@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:folkloria/data/models/book.dart';
 import 'package:folkloria/data/models/story.dart';
 import 'package:folkloria/ui/widgets/book_recomendation_card_widget.dart';
 import 'package:folkloria/common/static/navigation_route.dart';

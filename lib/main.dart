@@ -11,6 +11,7 @@ import 'package:folkloria/common/static/navigation_route.dart';
 import 'package:folkloria/common/style/theme/folkloria_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:folkloria/providers/detail/download_icon_provider.dart';
 import 'package:folkloria/providers/setting/dark_mode_state_provider.dart';
 import 'package:folkloria/providers/setting/shared_preferences_provider.dart';
 import 'package:folkloria/data/services/shared_preferences_service.dart';
@@ -38,6 +39,13 @@ void main() async {
         ChangeNotifierProvider(
           create: (context) =>
               LocalDatabaseProvider(context.read<LocalDatabaseService>()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) {
+            final provider = DownloadIconProvider();
+            provider.loadAllDownloads();
+            return provider;
+          },
         ),
         ChangeNotifierProvider(create: (context) => DarkModeStateProvider()),
         Provider(create: (context) => SharedPreferencesService(prefs)),

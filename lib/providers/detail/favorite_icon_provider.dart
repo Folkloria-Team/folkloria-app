@@ -9,4 +9,9 @@ class FavoriteIconProvider extends ChangeNotifier {
     _isFavorited = value;
     notifyListeners();
   }
+
+  void toggleFavorite() {
+    _isFavorited = !_isFavorited;
+    notifyListeners();
+  }
 }

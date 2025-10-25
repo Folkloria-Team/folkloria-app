@@ -6,7 +6,6 @@ import 'package:folkloria/ui/screens/read/read_screen.dart';
 import 'package:folkloria/providers/detail/download_icon_provider.dart';
 import 'package:folkloria/ui/widgets/download_icon_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:folkloria/data/models/book.dart';
 import 'package:folkloria/providers/detail/favorite_icon_provider.dart';
 import 'package:folkloria/providers/detail/book_detail_provider.dart';
 import 'package:folkloria/common/static/book_detail_result_state.dart';
@@ -73,27 +72,25 @@ class BodyOfDetailScreenWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ChangeNotifierProvider(
-                  create: (context) => DownloadIconProvider(),
-                  child: Consumer<BookDetailProvider>(
-                    builder: (context, value, child) {
-                      return switch (value.resultState) {
-                        BookDetailLoadedState(data: var bookDetail) =>
-                          DownloadIconWidget(
-                            book: Story(
-                              id: bookDetail.id,
-                              provinceId: bookDetail.provinceId,
-                              title: bookDetail.title,
-                              sinopsis: bookDetail.sinopsis,
-                              content: bookDetail.content,
-                              cover: bookDetail.cover,
-                              island: bookDetail.island,
+                Consumer2<BookDetailProvider, DownloadIconProvider>(
+                  builder:
+                      (context, bookDetailProvider, downloadProvider, child) {
+                        return switch (bookDetailProvider.resultState) {
+                          BookDetailLoadedState(data: var bookDetail) =>
+                            DownloadIconWidget(
+                              book: Story(
+                                id: bookDetail.id,
+                                provinceId: bookDetail.provinceId,
+                                title: bookDetail.title,
+                                sinopsis: bookDetail.sinopsis,
+                                content: bookDetail.content,
+                                cover: bookDetail.cover,
+                                island: bookDetail.island,
+                              ),
                             ),
-                          ),
-                        _ => const SizedBox(),
-                      };
-                    },
-                  ),
+                          _ => const SizedBox(),
+                        };
+                      },
                 ),
                 const SizedBox(width: 16),
                 ElevatedButton(

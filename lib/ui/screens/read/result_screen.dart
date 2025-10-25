@@ -3,14 +3,8 @@ import 'package:flutter/material.dart';
 class ResultScreen extends StatelessWidget {
   final String title;
   final String region;
-  final int xp;
 
-  const ResultScreen({
-    super.key,
-    required this.title,
-    required this.region,
-    this.xp = 10,
-  });
+  const ResultScreen({super.key, required this.title, required this.region});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +24,7 @@ class ResultScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // Gambar orang tos
-                  Image.asset('assets/images/success.png', width: 200),
+                  Image.asset('assets/images/read_result.png', width: 200),
                   const SizedBox(height: 24),
 
                   // Judul
@@ -46,20 +40,20 @@ class ResultScreen extends StatelessWidget {
 
                   // Deskripsi
                   const Text(
-                    'Yuk buat akun untuk menyimpan progress membaca kamu!',
+                    'Yuk Baca Lebih Banyak Lagi!',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
 
                   const SizedBox(height: 36),
 
-                  // Tombol “Baca Cerita Lain”
+                  // Tombol “Baca Cerita Lagi”
                   SizedBox(
                     width: double.infinity,
                     height: 52,
                     child: ElevatedButton(
                       onPressed: () {
-                        // nanti bisa diarahkan ke list cerita
+                        // nanti bisa diarahkan ke cerita
                         Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
@@ -70,7 +64,7 @@ class ResultScreen extends StatelessWidget {
                         ),
                       ),
                       child: const Text(
-                        'Baca Cerita Lain',
+                        'Baca Cerita Lagi',
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
@@ -94,7 +88,7 @@ class ResultScreen extends StatelessWidget {
                         ),
                       ),
                       child: const Text(
-                        'Kembali ke beranda',
+                        'Kembali Ke Beranda',
                         style: TextStyle(fontSize: 16),
                       ),
                     ),

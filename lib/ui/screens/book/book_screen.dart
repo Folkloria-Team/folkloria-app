@@ -7,7 +7,6 @@ import 'package:folkloria/ui/widgets/book_tab_bar_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:folkloria/providers/book/local_database_provider.dart';
 import 'package:folkloria/common/static/navigation_route.dart';
-import 'package:folkloria/common/static/constants.dart';
 
 class BookScreen extends StatefulWidget {
   const BookScreen({super.key});
@@ -63,7 +62,7 @@ class _BookScreenState extends State<BookScreen> {
                   // Tab Favorit
                   Consumer<LocalDatabaseProvider>(
                     builder: (context, value, child) {
-                      final favoriteList = value.favoriteList ?? [];
+                      final favoriteList = value.favoriteList;
 
                       return switch (favoriteList.isNotEmpty) {
                         true => GridView.builder(
@@ -109,7 +108,7 @@ class _BookScreenState extends State<BookScreen> {
                   // Tab Unduhan
                   Consumer<LocalDatabaseProvider>(
                     builder: (context, value, child) {
-                      final downloadList = value.downloadList ?? [];
+                      final downloadList = value.downloadList;
 
                       return switch (downloadList.isNotEmpty) {
                         true => GridView.builder(

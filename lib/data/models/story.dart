@@ -31,13 +31,13 @@ class Story {
 
   factory Story.fromJson(Map<String, dynamic> json) {
     return Story(
-      id: json["id"],
-      provinceId: json["province_id"],
-      title: json["title"],
-      sinopsis: json["sinopsis"],
-      content: json["content"],
-      cover: json["cover"],
-      island: json["island"],
+      id: json["id"] ?? '',
+      provinceId: json["province_id"] ?? '',
+      title: json["title"] ?? '',
+      sinopsis: json["sinopsis"] ?? '',
+      content: json["content"] ?? '',
+      cover: json["cover"] ?? '',
+      island: json["island"] ?? '',
     );
   }
 }

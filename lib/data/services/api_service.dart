@@ -44,7 +44,7 @@ class ApiServices {
         return StoryDetailResponse.fromJson(jsonDecode(response.body));
       } else {
         throw Exception(
-          'Gagal memuat detail restoran: ${response.statusCode} ${response.reasonPhrase}',
+          'Gagal memuat detail cerita: ${response.statusCode} ${response.reasonPhrase}',
         );
       }
     } on SocketException {
@@ -66,7 +66,7 @@ class ApiServices {
         return BookListResponse.fromJson(jsonDecode(response.body));
       } else {
         throw Exception(
-          'Gagal memuat daftar restoran: ${response.statusCode} ${response.reasonPhrase}',
+          'Gagal memuat daftar cerita: ${response.statusCode} ${response.reasonPhrase}',
         );
       }
     } on SocketException {
@@ -88,7 +88,7 @@ class ApiServices {
         return BookDetailResponse.fromJson(jsonDecode(response.body));
       } else {
         throw Exception(
-          'Gagal memuat detail restoran: ${response.statusCode} ${response.reasonPhrase}',
+          'Gagal memuat detail cerita: ${response.statusCode} ${response.reasonPhrase}',
         );
       }
     } on SocketException {
@@ -112,7 +112,7 @@ class ApiServices {
         return BookSearchResponse.fromJson(jsonDecode(response.body));
       } else {
         throw Exception(
-          'Gagal mencari restoran: ${response.statusCode} ${response.reasonPhrase}',
+          'Gagal mencari cerita: ${response.statusCode} ${response.reasonPhrase}',
         );
       }
     } on SocketException {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:folkloria/data/models/book_detail.dart';
 import 'package:folkloria/data/models/story_detail.dart';
 import 'package:folkloria/ui/screens/read/result_screen.dart';
 
@@ -20,26 +19,32 @@ class _ReadScreenState extends State<ReadScreen> {
   void initState() {
     super.initState();
 
-    // Tambah listener buat deteksi scroll mentok bawah
     _scrollController.addListener(() {
-      if (!_hasNavigated &&
-          _scrollController.position.pixels >=
-              _scrollController.position.maxScrollExtent - 50) {
+      if (_hasNavigated) return; // biar gak double trigger
+      if (!_scrollController.hasClients) return;
+
+      final maxScroll = _scrollController.position.maxScrollExtent;
+      final currentScroll = _scrollController.position.pixels;
+
+      // Kalau scroll-nya sudah mendekati bawah (atau kalau konten terlalu pendek)
+      if (maxScroll < 200 || currentScroll >= maxScroll - 50) {
         _hasNavigated = true;
 
-        // Delay dikit biar animasi smooth
+        // Pastikan widget masih aktif
+        if (!mounted) return;
+
         Future.delayed(const Duration(milliseconds: 400), () {
-          if (mounted) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (_) => ResultScreen(
-                  title: widget.bookDetail.title,
-                  region: widget.bookDetail.island,
-                ),
+          if (!mounted) return;
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ResultScreen(
+                title: widget.bookDetail.title,
+                region: widget.bookDetail.island,
               ),
-            );
-          }
+            ),
+          );
         });
       }
     });
@@ -54,7 +59,8 @@ class _ReadScreenState extends State<ReadScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final imageUrl = 'https://bekup-api.radifa.my.id/api${widget.bookDetail.cover}';
+    final imageUrl =
+        'https://bekup-api.radifa.my.id/api${widget.bookDetail.cover}';
 
     return Scaffold(
       backgroundColor: theme.colorScheme.surface,
@@ -85,8 +91,6 @@ class _ReadScreenState extends State<ReadScreen> {
                     ),
                   ),
                 ),
-
-                // Gradient overlay
                 Container(
                   height: 300,
                   decoration: BoxDecoration(
@@ -105,8 +109,6 @@ class _ReadScreenState extends State<ReadScreen> {
                     ),
                   ),
                 ),
-
-                // Tombol Back & Share
                 SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -140,13 +142,10 @@ class _ReadScreenState extends State<ReadScreen> {
               ],
             ),
           ),
-
-          // Konten di bawah gambar
           SliverToBoxAdapter(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Header abu transparan
                 Container(
                   width: double.infinity,
                   color: theme.colorScheme.surface.withValues(alpha: 0.15),
@@ -173,8 +172,6 @@ class _ReadScreenState extends State<ReadScreen> {
                     ],
                   ),
                 ),
-
-                // Isi buku
                 Container(
                   width: double.infinity,
                   color: theme.colorScheme.surface,

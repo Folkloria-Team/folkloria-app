@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:folkloria/data/models/book.dart';
-import 'package:folkloria/common/static/constants.dart';
 import 'package:folkloria/data/models/story.dart';
 
 class BookRecomendationCard extends StatelessWidget {

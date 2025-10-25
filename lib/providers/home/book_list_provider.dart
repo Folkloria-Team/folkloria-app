@@ -12,7 +12,7 @@ class BookListProvider extends ChangeNotifier {
   BookListResultState _resultState = BookListNoneState();
   List<Story> _originalBookList = [];
   String _searchQuery = '';
-  List<String> _searchHistory = [];
+  final List<String> _searchHistory = [];
 
   BookListResultState get resultState => _resultState;
   String get searchQuery => _searchQuery;

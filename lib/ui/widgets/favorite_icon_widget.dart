@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:folkloria/data/models/story.dart';
 import 'package:provider/provider.dart';
-import 'package:folkloria/data/models/book.dart';
 import 'package:folkloria/providers/detail/favorite_icon_provider.dart';
 import 'package:folkloria/providers/book/local_database_provider.dart';
 

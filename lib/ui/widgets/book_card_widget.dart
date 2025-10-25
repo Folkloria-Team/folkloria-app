@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:folkloria/common/style/typography/folkloria_text_styles.dart';
 // import 'package:folkloria/data/models/book.dart';
-import 'package:folkloria/common/static/constants.dart';
 import 'package:folkloria/data/models/story.dart';
 
 class BookCard extends StatelessWidget {
